@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión - Sistema de Reservas</title>
+    <title>Registro - Sistema de Reservas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="auth-container">
-        <h2>Iniciar Sesión</h2>
-
+        <h2>Crear Cuenta - UNEMI Conciertos</h2>
+        
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
             {% for category, message in messages %}
@@ -18,7 +18,11 @@
           {% endif %}
         {% endwith %}
 
-        <form action="{{ url_for('auth.login') }}" method="POST">
+        <form action="{{ url_for('auth.register') }}" method="POST">
+            <div class="form-group">
+                <label for="nombre">Nombre Completo:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Ej. Francisco Solís">
+            </div>
             <div class="form-group">
                 <label for="correo">Correo Electrónico:</label>
                 <input type="email" id="correo" name="correo" required placeholder="usuario@unemi.edu.ec">
@@ -27,9 +31,9 @@
                 <label for="contrasena">Contraseña:</label>
                 <input type="password" id="contrasena" name="contrasena" required placeholder="********">
             </div>
-            <button type="submit" class="btn-auth">Ingresar</button>
+            <button type="submit" class="btn-auth">Registrarse</button>
         </form>
-        <p>¿No tienes una cuenta? <a href="{{ url_for('auth.register') }}">Regístrate aquí</a></p>
+        <p>¿Ya tienes cuenta? <a href="{{ url_for('auth.login') }}">Inicia sesión aquí</a></p>
     </div>
 </body>
 </html>
