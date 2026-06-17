@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Asientos - UNEMI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="mapa-container">
+        <header class="mapa-header">
+            <h2>Sistema de Aforo - ¡Bienvenido, {{ session['user_name'] }}!</h2>
+            <a href="{{ url_for('auth.logout') }}" class="btn-logout">Cerrar Sesión</a>
+        </header>
+
+        <section class="leyenda">
+            <div class="item-leyenda"><span class="cuadro disponible"></span> Disponible</div>
+            <div class="item-leyenda"><span class="cuadro reservado"></span> Reservado Temporal</div>
+            <div class="item-leyenda"><span class="cuadro vendido"></span> Vendido</div>
+        </section>
+
+        <div class="escenario">ESCENARIO PRINCIPAL</div>
+
+        <div id="grid-asientos" class="grid-asientos"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/mapa.js') }}"></script>
+</body>
+</html>

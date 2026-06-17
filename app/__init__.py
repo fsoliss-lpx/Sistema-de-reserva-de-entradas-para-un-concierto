@@ -3,14 +3,14 @@ from flask import Flask
 
 def create_app():
     app = Flask(__name__)
-
-    # Configurar la clave secreta
     app.secret_key = os.getenv('FLASK_SECRET_KEY', 'unemi_clave_secreta_temporal')
 
-    # Importar los controladores (Blueprints)
+    # Importar controladores
     from app.controllers.auth_controller import auth_bp
+    from app.controllers.reserva_controller import reserva_bp
 
-    # Registrar los Blueprints
+    # Registrar controladores
     app.register_blueprint(auth_bp)
+    app.register_blueprint(reserva_bp)
     
     return app
