@@ -22,9 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     // Asignar color dinámico basado en el estado (Asignación Cromática en Tiempo Real)
                     if (asiento.estado === "DISPONIBLE") {
                         divAsiento.classList.add("st-disponible");
-                        // Evento click provisional para el Sprint 3
-                        divAsiento.addEventListener("click", () => {
-                            alert(`Seleccionaste el asiento ${asiento.numero_asiento}. El control optimista se aplicará en el Sprint 3.`);
+                        divAsiento.addEventListener("click", () => {solicitarReserva(asiento.id_asiento);
                         });
                     } else if (asiento.estado === "RESERVADO_TEMPORAL") {
                         divAsiento.classList.add("st-reservado");
@@ -37,6 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error("Error al pintar el mapa asíncrono:", error));
     }
+    function solicitarReserva(idAsiento) {
+    fetch('/api/reservar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_asiento: idAsiento })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            cargarAsientos(); // Recargar el mapa para ver el asiento en amarillo
+        } else {
+            alert("Error: " + data.message);
+            cargarAsientos(); // Recargar el mapa para ver quién nos ganó el asiento
+        }
+    })
+    .catch(err => console.error("Error en la reserva:", err));
+}
 
     // Cargar los asientos al abrir la página
     cargarAsientos();
