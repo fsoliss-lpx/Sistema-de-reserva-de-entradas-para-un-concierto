@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Comprobante Oficial</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container">
+        <h2 style="color: #2ecc71; text-align: center;">¡Transacción Exitosa!</h2>
+        <div style="border: 2px dashed #ccc; padding: 20px; text-align: center; margin-top: 20px;">
+            <h3>TICKET DIGITAL UNEMI</h3>
+            <p><strong>Titular:</strong> {{ usuario }}</p>
+            <p><strong>N° de Reserva/Pago:</strong> #{{ id_reserva }}</p>
+            <p><strong>Estado:</strong> VENDIDO</p>
+        </div>
+        <a href="{{ url_for('reserva.mapa_vista') }}"><button class="btn-auth">Volver al Mapa</button></a>
+    </div>
+</body>
+</html>

@@ -38,27 +38,33 @@ def get_asientos():
 @reserva_bp.route('/api/reservar', methods=['POST'])
 def reservar_asiento():
     if 'user_id' not in session:
-        return jsonify({'status': 'error', 'message': 'No autenticado'}), 401
+        return jsonify({'status': 'error', 'message': 'Usuario no autenticado'}), 401
         
     data = request.get_json()
     id_asiento = data.get('id_asiento')
     
-    # Obtener estado y versión actual
+    # Buscamos el estado actual del asiento
     asiento = AsientoModel.obtener_por_id(id_asiento)
+    
     if not asiento:
         return jsonify({'status': 'error', 'message': 'Asiento no encontrado'}), 404
         
     if asiento['estado'] != 'DISPONIBLE':
-        return jsonify({'status': 'error', 'message': 'El asiento ya no está disponible'}), 409
+        return jsonify({'status': 'error', 'message': 'El asiento ya no se encuentra disponible'}), 409
 
-    # Intentar ejecutar el bloqueo optimista en MySQL
-    exito = AsientoModel.intentar_reservar(id_asiento, session['user_id'], asiento['version'])
+    # Intentar el bloqueo concurrente (Ahora devuelve el ID de la reserva en lugar de solo True)
+    id_nueva_reserva = AsientoModel.intentar_reservar(id_asiento, session['user_id'], asiento['version'])
     
-    if exito:
-        return jsonify({'status': 'success', 'message': '¡Asiento bloqueado temporalmente por 10 minutos!'}), 200
+    if id_nueva_reserva:
+        # AGREGADO: Se incluye 'id_reserva' en la respuesta para que el JS sepa a dónde redirigir
+        return jsonify({
+            'status': 'success', 
+            'message': 'Asiento bloqueado. Redirigiendo a pagos...', 
+            'id_reserva': id_nueva_reserva
+        }), 200
     else:
         return jsonify({
             'status': 'error', 
-            'message': '¡Condición de Carrera! Otro usuario acaba de tomar este asiento.'
+            'message': '¡Condición de Carrera detectada! Otro usuario seleccionó este asiento milisegundos antes.'
         }), 409
 

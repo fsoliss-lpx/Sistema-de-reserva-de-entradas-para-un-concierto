@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(error => console.error("Error al pintar el mapa asíncrono:", error));
     }
+    
     function solicitarReserva(idAsiento) {
     fetch('/api/reservar', {
         method: 'POST',
@@ -44,11 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(data => {
         if (data.status === 'success') {
+            // AGREGADO: Alerta de éxito y redirección inmediata a la ruta de pagos usando el ID que envió Python
             alert(data.message);
-            cargarAsientos(); // Recargar el mapa para ver el asiento en amarillo
+            window.location.href = '/pago/' + data.id_reserva; 
         } else {
+            // Si falla por condición de carrera, muestra el error y recarga los colores
             alert("Error: " + data.message);
-            cargarAsientos(); // Recargar el mapa para ver quién nos ganó el asiento
+            cargarAsientos(); 
         }
     })
     .catch(err => console.error("Error en la reserva:", err));

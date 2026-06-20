@@ -41,7 +41,8 @@ class AsientoModel:
             
             # Consolidar la transacción ACID
             connection.commit()
-            return True
+            return cursor.lastrowid
+        
         except Exception as e:
             connection.rollback()
             print(f"Error en concurrencia: {e}")

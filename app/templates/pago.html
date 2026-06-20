@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pasarela de Pagos Simulada</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="auth-container" style="text-align: center;">
+        <h2>Pasarela de Pago (Simulador)</h2>
+        <p>Estás a punto de procesar la transacción financiera para la Reserva #{{ id_reserva }}. Tienes un TTL (Tiempo Límite) de 10 minutos para decidir.</p>
+        
+        <form action="{{ url_for('pago.simular_pago', id_reserva=id_reserva) }}" method="POST" style="margin-top: 20px;">
+            <button type="submit" name="resultado" value="exito" class="btn-auth" style="background-color: #2ecc71;">Simular Pago Exitoso</button>
+            <br>
+            <button type="submit" name="resultado" value="fallo" class="btn-auth" style="background-color: #e74c3c;">Simular Rechazo Bancario</button>
+        </form>
+    </div>
+</body>
+</html>
